@@ -26,7 +26,7 @@ require("lazy").setup {
     { import = "plugins" },
   },
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "catppuccin" } },
+  install = { colorscheme = { "catppuccin-nvim" } },
   -- set plugins as lazy by default
   defaults = { lazy = true },
   change_detection = { enabled = false },
