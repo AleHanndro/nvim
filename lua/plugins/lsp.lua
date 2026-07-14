@@ -1,34 +1,22 @@
 ---@type LazySpec[]
 return {
   {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      { "mason-org/mason.nvim", cmd = "Mason", opts = {} },
-      "neovim/nvim-lspconfig",
-    },
+    "mason-org/mason.nvim",
+    cmd = "Mason",
     opts = {
-      ensure_installed = {
-        "astro-language-server", -- astro
-        "actionlint", -- yaml (github actions)
-        "basedpyright", -- python
-        "dockerfile-language-server", -- docker, lsp: dockerls
-        "hadolint", -- docker
-        "json-lsp", -- json, lsp: jsonls
-        "just-lsp", -- justfile, lsp: just
-        "lua-language-server", -- lua, lsp: lua_ls
-        "rumdl", -- markdown format/linter
-        "stylua", -- lua
-        "tombi", -- toml lsp/linter/formatter, lsp: tombi
-        "vtsls", -- typescript/tsx/javascript/jsx/...
-        "yaml-language-server", -- yaml, lsp: yamlls
-        "yamlfmt", -- yaml
-        "yamllint", -- yaml
+      ui = {
+        icons = {
+          package_pending = " ",
+          package_installed = " ",
+          package_uninstalled = " ",
+        },
       },
     },
-    config = function(_, opts)
-      require("mason-tool-installer").setup(opts)
+  },
 
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
       local x = vim.diagnostic.severity
       vim.diagnostic.config {
         update_in_insert = false,
@@ -59,23 +47,50 @@ return {
       }
 
       vim.lsp.config("*", { capabilities = capabilities })
-
-      local servers = {
-        "astro",
-        "basedpyright",
-        "biome",
-        "dockerls",
-        "jsonls",
-        "just",
-        "lua_ls",
-        "rumdl",
-        "tombi",
-        "vtsls",
-        "yamlls",
-      }
-
-      vim.lsp.enable(servers)
     end,
+  },
+
+  {
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = { "neovim/nvim-lspconfig" },
+    opts = {
+      ensure_installed = {
+        "astro", -- astro
+        "basedpyright", -- python
+        "cssls", -- css/scss/sass
+        "dockerls", -- dockerfile
+        "emmet_language_server", -- emmet
+        "eslint", -- eslint lint
+        "jsonls", -- json/jsonc/json5
+        "just", -- justfile
+        "lua_ls", -- lua
+        "rumdl", -- markdown lint
+        "superhtml", -- html
+        "tailwindcss", -- tailwind support
+        "tombi", -- toml
+        "vtsls", -- typescript/javascript/tsx/jsx/...
+        "yamlls", -- yaml
+      },
+    },
+  },
+
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
+    },
+    opts = {
+      ensure_installed = {
+        "actionlint", -- yaml (github actions)
+        "hadolint", -- docker
+        "prettierd", -- html/js/ts/tsx/jsx/...
+        "stylua", -- lua
+        "yamlfmt", -- yaml
+        "yamllint", -- yaml
+      },
+    },
   },
 
   {
