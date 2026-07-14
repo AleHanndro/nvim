@@ -9,6 +9,7 @@ return {
     },
     opts = {
       ensure_installed = {
+        "astro-language-server", -- astro
         "actionlint", -- yaml (github actions)
         "basedpyright", -- python
         "dockerfile-language-server", -- docker, lsp: dockerls
@@ -19,6 +20,7 @@ return {
         "rumdl", -- markdown format/linter
         "stylua", -- lua
         "tombi", -- toml lsp/linter/formatter, lsp: tombi
+        "vtsls", -- typescript/tsx/javascript/jsx/...
         "yaml-language-server", -- yaml, lsp: yamlls
         "yamlfmt", -- yaml
         "yamllint", -- yaml
@@ -59,13 +61,16 @@ return {
       vim.lsp.config("*", { capabilities = capabilities })
 
       local servers = {
+        "astro",
         "basedpyright",
+        "biome",
         "dockerls",
         "jsonls",
         "just",
         "lua_ls",
         "rumdl",
         "tombi",
+        "vtsls",
         "yamlls",
       }
 
