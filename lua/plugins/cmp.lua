@@ -3,6 +3,7 @@ return {
     "saghen/blink.cmp",
     version = "1.*",
     dependencies = {
+      "onsails/lspkind.nvim",
       "rafamadriz/friendly-snippets",
       {
         "L3MON4D3/LuaSnip",
@@ -52,6 +53,15 @@ return {
     },
     event = "InsertEnter",
     opts = function()
+      local unknown_types = {
+        "link",
+        "socket",
+        "fifo",
+        "char",
+        "block",
+        "unknown",
+      }
+
       ---@module 'blink-cmp'
       ---@type blink.cmp.Config
       return {
@@ -76,9 +86,49 @@ return {
         },
 
         completion = {
-          documentation = { auto_show = false, auto_show_delay_ms = 500 },
+          documentation = {
+            auto_show = false,
+            auto_show_delay_ms = 500,
+            window = { border = "single", scrollbar = false },
+          },
           list = {
             selection = { preselect = false, auto_insert = true },
+          },
+
+          menu = {
+            scrollbar = false,
+            border = "single",
+            draw = {
+              columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+              components = {
+                kind_icon = {
+                  text = function(ctx)
+                    if ctx.source_name ~= "Path" then
+                      return (require("lspkind").symbol_map[ctx.kind] or "") .. ctx.icon_gap
+                    end
+
+                    local is_unknown_type = vim.tbl_contains(unknown_types, ctx.item.data.type)
+                    local mini_icon, _ = require("mini.icons").get(
+                      is_unknown_type and "os" or ctx.item.data.type,
+                      is_unknown_type and "" or ctx.label
+                    )
+
+                    return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
+                  end,
+                  highlight = function(ctx)
+                    if ctx.source_name ~= "Path" then return ctx.kind_hl end
+
+                    local is_unknown_type = vim.tbl_contains(unknown_types, ctx.item.data.type)
+                    local mini_icon, mini_hl = require("mini.icons").get(
+                      is_unknown_type and "os" or ctx.item.data.type,
+                      is_unknown_type and "" or ctx.label
+                    )
+
+                    return mini_icon ~= nil and mini_hl or ctx.kind_hl
+                  end,
+                },
+              },
+            },
           },
         },
 
