@@ -64,6 +64,7 @@ return {
         "jsonls",
         "just",
         "lua_ls",
+        "rumdl",
         "tombi",
         "yamlls",
       }

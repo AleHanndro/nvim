@@ -8,7 +8,6 @@ return {
       lint.linters_by_ft = {
         dockerfile = { "hadolint" },
         gha = { "actionlint" },
-        markdown = { "rumdl" },
         yaml = { "yamllint" },
       }
     end,
