@@ -38,9 +38,13 @@ return {
       formatters_by_ft = {
         dependabot = { "yamlfmt" },
         gha = { "yamlfmt" },
+        javascript = { "biome" },
+        javascriptreact = { "biome" },
         lua = { "stylua" },
         markdown = { "rumdl" },
         rust = { "rustfmt" },
+        typescript = { "biome" },
+        typescriptreact = { "biome" },
         yaml = { "yamlfmt" },
       },
     },
