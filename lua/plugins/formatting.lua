@@ -20,6 +20,9 @@ return {
       default_format_opts = { lsp_format = "fallback" },
 
       formatters = {
+        prettierd = {
+          env = { PRETTIERD_LOCAL_PRETTIER_ONLY = "1" },
+        },
         rumdl = {
           prepend_args = {
             "--config",
@@ -36,15 +39,19 @@ return {
       },
 
       formatters_by_ft = {
+        astro = { "prettierd" },
         dependabot = { "yamlfmt" },
         gha = { "yamlfmt" },
-        javascript = { "biome" },
-        javascriptreact = { "biome" },
+        javascript = { "prettierd", "biome", stop_after_first = true },
+        javascriptreact = { "prettierd", "biome", stop_after_first = true },
+        json5 = { "biome" },
+        json = { "biome" },
+        jsonc = { "biome" },
         lua = { "stylua" },
         markdown = { "rumdl" },
         rust = { "rustfmt" },
-        typescript = { "biome" },
-        typescriptreact = { "biome" },
+        typescript = { "prettierd", "biome", stop_after_first = true },
+        typescriptreact = { "prettierd", "biome", stop_after_first = true },
         yaml = { "yamlfmt" },
       },
     },
