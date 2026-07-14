@@ -26,7 +26,49 @@ return {
     },
     config = function(_, opts)
       require("mason-tool-installer").setup(opts)
-      require "configs.lspconfig"
+
+      local x = vim.diagnostic.severity
+      vim.diagnostic.config {
+        update_in_insert = false,
+        severity_sort = true,
+        virtual_text = false,
+        signs = {
+          text = { [x.ERROR] = "󰅙", [x.WARN] = "", [x.INFO] = "󰋼", [x.HINT] = "󰌵" },
+        },
+        float = { border = "single" },
+        underline = {
+          severity = { min = x.WARN },
+        },
+      }
+
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem = {
+        documentationFormat = { "plaintext", "markdown" },
+        snippetSupport = true,
+        preselectSupport = true,
+        insertReplaceSupport = true,
+        labelDetailsSupport = true,
+        deprecatedSupport = true,
+        commitCharactersSupport = true,
+        tagSupport = { valueSet = { 1 } },
+        resolveSupport = {
+          properties = { "documentation", "detail", "additionalTextEdits" },
+        },
+      }
+
+      vim.lsp.config("*", { capabilities = capabilities })
+
+      local servers = {
+        "basedpyright",
+        "dockerls",
+        "jsonls",
+        "just",
+        "lua_ls",
+        "tombi",
+        "yamlls",
+      }
+
+      vim.lsp.enable(servers)
     end,
   },
 }
