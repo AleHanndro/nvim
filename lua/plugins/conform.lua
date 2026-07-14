@@ -1,0 +1,39 @@
+return {
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    keys = {
+      {
+        mode = { "n", "x" },
+        "<leader>fm",
+        function() require("conform").format { async = false } end,
+        desc = "Format buffer",
+      },
+    },
+    ---@module 'conform'
+    ---@type conform.setupOpts
+    opts = {
+      notify_on_error = false,
+      format_on_save = { timeout_ms = 500, lsp_format = "fallback", async = false },
+      default_format_opts = { lsp_format = "fallback" },
+
+      formatters = {
+        yamlfmt = {
+          prepend_args = { "-formatter", "retain_line_breaks_single=true", "-formatter", "pad_line_comments=2" },
+        },
+        rumdl = {
+          prepend_args = { "--config", "MD013.line-length = 80", "--config", "MD013.reflow = true" },
+        },
+      },
+
+      formatters_by_ft = {
+        lua = { "stylua" },
+        rust = { "rustfmt" },
+        yaml = { "yamlfmt" },
+        dependabot = { "yamlfmt" },
+        gha = { "yamlfmt" },
+        markdown = { "rumdl" },
+      },
+    },
+  },
+}
