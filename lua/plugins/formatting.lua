@@ -1,7 +1,9 @@
+---@type LazySpec[]
 return {
   {
     "stevearc/conform.nvim",
     event = "BufWritePre",
+    cmd = "ConformInfo",
     keys = {
       {
         mode = { "n", "x" },
@@ -18,21 +20,28 @@ return {
       default_format_opts = { lsp_format = "fallback" },
 
       formatters = {
+        rumdl = {
+          prepend_args = {
+            "--config",
+            'global.disable = ["MD034", "MD036", "MD040"]',
+            "--config",
+            "MD013.line-length = 80",
+            "--config",
+            "MD013.reflow = true",
+          },
+        },
         yamlfmt = {
           prepend_args = { "-formatter", "retain_line_breaks_single=true", "-formatter", "pad_line_comments=2" },
-        },
-        rumdl = {
-          prepend_args = { "--config", "MD013.line-length = 80", "--config", "MD013.reflow = true" },
         },
       },
 
       formatters_by_ft = {
-        lua = { "stylua" },
-        rust = { "rustfmt" },
-        yaml = { "yamlfmt" },
         dependabot = { "yamlfmt" },
         gha = { "yamlfmt" },
+        lua = { "stylua" },
         markdown = { "rumdl" },
+        rust = { "rustfmt" },
+        yaml = { "yamlfmt" },
       },
     },
   },
