@@ -16,7 +16,6 @@ opt.laststatus = 3 -- global statusline
 opt.list = true
 opt.ruler = false
 opt.completeopt = "menu,menuone,noselect"
-opt.conceallevel = 2
 
 -- indenting
 opt.expandtab = true

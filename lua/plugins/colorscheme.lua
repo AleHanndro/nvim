@@ -7,8 +7,12 @@ return {
   ---@type CatppuccinOptions
   opts = {
     flavour = "mocha",
-    no_italic = true, -- delete or set to false if font have native italics
     term_colors = true,
+    -- only use italics for comments
+    styles = {
+      conditionals = {},
+      miscs = {},
+    },
     -- only enable required integrations
     default_integrations = false,
     integrations = {
@@ -24,6 +28,14 @@ return {
       snacks = { enabled = true, indent_scope_color = "red" },
       which_key = true,
     },
+    custom_highlights = function(colors)
+      return {
+        BlinkCmpMenu = { bg = colors.base },
+        BlinkCmpMenuBorder = { bg = colors.base, fg = colors.blue },
+        BlinkCmpDoc = { bg = colors.base },
+        BlinkCmpDocBorder = { bg = colors.base, fg = colors.blue },
+      }
+    end,
   },
   config = function(_, opts)
     require("catppuccin").setup(opts)
