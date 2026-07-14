@@ -71,4 +71,16 @@ return {
       vim.lsp.enable(servers)
     end,
   },
+
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "LspAttach",
+    opts = {
+      options = {
+        show_source = { if_many = true },
+        use_icons_from_diagnostic = true,
+        experimental = { use_window_local_extmarks = true },
+      },
+    },
+  },
 }
