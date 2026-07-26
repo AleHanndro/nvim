@@ -14,7 +14,7 @@ return {
       miscs = {},
     },
     -- only enable required integrations
-    default_integrations = false,
+    auto_integrations = false,
     integrations = {
       blink_cmp = true,
       fidget = true,
