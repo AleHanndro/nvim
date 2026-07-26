@@ -52,11 +52,31 @@ return {
 
   {
     "mason-org/mason-lspconfig.nvim",
-    dependencies = { "neovim/nvim-lspconfig" },
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "mason-org/mason.nvim",
+      {
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        opts = {
+          ensure_installed = {
+            "actionlint", -- yaml (github actions)
+            "hadolint", -- docker
+            "prettierd", -- html/js/ts/tsx/jsx/...
+            "shellcheck", -- Bash/sh
+            "shfmt", -- bash/mksh/sh/zsh
+            "stylua", -- lua
+            "yamlfmt", -- yaml
+            "yamllint", -- yaml
+          },
+        },
+      },
+    },
     opts = {
       ensure_installed = {
         "astro", -- astro
         "basedpyright", -- python
+        "bashls", -- bash/csh/ksh/sh/zsh
         "cssls", -- css/scss/sass
         "dockerls", -- dockerfile
         "emmet_language_server", -- emmet
@@ -72,25 +92,15 @@ return {
         "yamlls", -- yaml
       },
     },
-  },
+    config = function(_, opts)
+      require("mason-lspconfig").setup(opts)
 
-  {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "mason-org/mason.nvim",
-      "mason-org/mason-lspconfig.nvim",
-    },
-    opts = {
-      ensure_installed = {
-        "actionlint", -- yaml (github actions)
-        "hadolint", -- docker
-        "prettierd", -- html/js/ts/tsx/jsx/...
-        "stylua", -- lua
-        "yamlfmt", -- yaml
-        "yamllint", -- yaml
-      },
-    },
+      -- There are LSP servers that should be installed under certain conditions.
+      -- For example, they should match the installed version of the current
+      -- toolchain/compiler (e.g. rust_analyzer, zls). These LSPs are easier to manage
+      -- with external version managers (e.g. rustup or mise) than with Mason.
+      vim.lsp.enable { "zls" }
+    end,
   },
 
   {
