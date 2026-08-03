@@ -2,10 +2,6 @@ local map = vim.keymap.set
 
 map("i", "<C-b>", "<ESC>^i", { desc = "Move beginning of line" })
 map("i", "<C-e>", "<End>", { desc = "Move end of line" })
-map("i", "<C-h>", "<Left>", { desc = "Move left" })
-map("i", "<C-l>", "<Right>", { desc = "Move right" })
-map("i", "<C-j>", "<Down>", { desc = "Move down" })
-map("i", "<C-k>", "<Up>", { desc = "Move up" })
 
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "Clear highlights" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "Copy whole file" })
