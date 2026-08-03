@@ -12,8 +12,8 @@ map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "Copy whole file" })
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
-map("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Next buffer" })
-map("n", "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+map("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
+map("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { desc = "Previous buffer" })
 map("n", "<C-q>", function() Snacks.bufdelete.delete { wipe = true, force = false } end, { desc = "Delete buffer" })
 
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
