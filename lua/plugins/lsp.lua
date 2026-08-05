@@ -74,19 +74,14 @@ return {
     },
     opts = {
       ensure_installed = {
-        "astro", -- astro
         "basedpyright", -- python
         "bashls", -- bash/csh/ksh/sh/zsh
-        "cssls", -- css/scss/sass
         "dockerls", -- dockerfile
-        "emmet_language_server", -- emmet
         "eslint", -- eslint lint
         "jsonls", -- json/jsonc/json5
         "just", -- justfile
         "lua_ls", -- lua
         "rumdl", -- markdown lint
-        "superhtml", -- html
-        "tailwindcss", -- tailwind support
         "tombi", -- toml
         "vtsls", -- typescript/javascript/tsx/jsx/...
         "yamlls", -- yaml

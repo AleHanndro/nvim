@@ -39,7 +39,6 @@ return {
       },
 
       formatters_by_ft = {
-        astro = { "prettierd" },
         dependabot = { "yamlfmt" },
         gha = { "yamlfmt" },
         javascript = { "prettierd", "biome", stop_after_first = true },
