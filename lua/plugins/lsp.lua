@@ -65,6 +65,7 @@ return {
             "prettierd", -- html/js/ts/tsx/jsx/...
             "shellcheck", -- Bash/sh
             "shfmt", -- bash/mksh/sh/zsh
+            "staticcheck", -- go (enabled in gopls settings)
             "stylua", -- lua
             "yamlfmt", -- yaml
             "yamllint", -- yaml
@@ -94,7 +95,7 @@ return {
       -- For example, they should match the installed version of the current
       -- toolchain/compiler (e.g. rust_analyzer, zls). These LSPs are easier to manage
       -- with external version managers (e.g. rustup or mise) than with Mason.
-      vim.lsp.enable { "zls" }
+      vim.lsp.enable { "gopls", "zls" }
     end,
   },
 
