@@ -61,6 +61,10 @@ return {
         opts = {
           ensure_installed = {
             "actionlint", -- yaml (github actions)
+            "gci", -- go
+            "gofumpt", -- go (used as golines base formatter)
+            "goimports", -- go
+            "golines", -- go
             "hadolint", -- docker
             "prettierd", -- html/js/ts/tsx/jsx/...
             "shellcheck", -- Bash/sh
