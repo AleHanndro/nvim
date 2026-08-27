@@ -4,28 +4,32 @@ return {
     version = "1.*",
     dependencies = {
       "onsails/lspkind.nvim",
-      "rafamadriz/friendly-snippets",
       {
         "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp",
         dependencies = "rafamadriz/friendly-snippets",
-        opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+        opts = {
+          exit_roots = false,
+          keep_roots = true,
+          link_children = true,
+          link_roots = true,
+          update_events = { "TextChanged", "TextChangedI" },
+        },
         config = function(_, opts)
-          require("luasnip").config.set_config(opts)
+          local luasnip = require "luasnip"
 
-          require("luasnip.loaders.from_vscode").lazy_load { exclude = vim.g.vscode_snippets_exclude or {} }
-          require("luasnip.loaders.from_vscode").lazy_load { paths = vim.g.vscode_snippets_path or "" }
+          luasnip.config.set_config(opts)
 
-          require("luasnip.loaders.from_snipmate").load()
-          require("luasnip.loaders.from_snipmate").lazy_load { paths = vim.g.snipmate_snippets_path or "" }
+          require("luasnip.loaders.from_vscode").lazy_load()
+          require("luasnip.loaders.from_lua").lazy_load()
 
-          -- fix luasnip #258
+          -- see: https://github.com/L3MON4D3/LuaSnip/issues/258
           vim.api.nvim_create_autocmd("InsertLeave", {
-            callback = function()
-              if
-                require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-                and not require("luasnip").session.jump_active
-              then
-                require("luasnip").unlink_current()
+            group = vim.api.nvim_create_augroup("luasnip-unlink", { clear = true }),
+            desc = "Unlink active LuaSnip snippet on InsertLeave",
+            callback = function(args)
+              if luasnip.session.current_nodes[args.buf] and not luasnip.session.jump_active then
+                luasnip.unlink_current()
               end
             end,
           })
