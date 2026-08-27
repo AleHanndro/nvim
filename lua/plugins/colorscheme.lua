@@ -6,7 +6,7 @@ return {
   ---@module 'catppuccin'
   ---@type CatppuccinOptions
   opts = {
-    flavour = "mocha",
+    flavour = "auto",
     term_colors = true,
     -- only use italics for comments
     styles = {
