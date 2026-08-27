@@ -69,11 +69,6 @@ return {
               { silent = true, buffer = bufnr }
             )
           end,
-          default_settings = {
-            ["rust-analyzer"] = {
-              cargo = { features = "all", targetDir = true },
-            },
-          },
         },
         ---@type rustaceanvim.dap.Config
         dap = { autoload_configurations = false },
