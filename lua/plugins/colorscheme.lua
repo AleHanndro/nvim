@@ -7,12 +7,6 @@ return {
   ---@type CatppuccinOptions
   opts = {
     flavour = "auto",
-    term_colors = true,
-    -- only use italics for comments
-    styles = {
-      conditionals = {},
-      miscs = {},
-    },
     -- only enable required integrations
     auto_integrations = false,
     integrations = {
@@ -28,6 +22,8 @@ return {
     },
     custom_highlights = function(colors)
       return {
+        BlinkCmpKindEnumMember = { fg = colors.red },
+        BlinkCmpLabelMatch = { style = { "bold" } },
         BlinkCmpMenu = { bg = colors.base },
         BlinkCmpMenuBorder = { bg = colors.base, fg = colors.blue },
         BlinkCmpDoc = { bg = colors.base },
