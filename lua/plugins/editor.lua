@@ -1,60 +1,6 @@
 ---@type LazySpec[]
 return {
   {
-    "ibhagwan/fzf-lua",
-    cmd = "FzfLua",
-    keys = {
-      {
-        "<leader>sf",
-        function()
-          FzfLua.files {
-            actions = {
-              ["ctrl-i"] = { FzfLua.actions.toggle_ignore },
-              ["ctrl-h"] = { FzfLua.actions.toggle_hidden },
-            },
-          }
-        end,
-        desc = "search files",
-      },
-      { "<leader><leader>", "<cmd>FzfLua buffers<CR>", desc = "search open buffers" },
-      { "<leader>sk", "<cmd>FzfLua keymaps<CR>", desc = "search keymaps" },
-      { "<leader>sh", "<cmd>FzfLua helptags<CR>", desc = "search help" },
-      {
-        "<leader>sg",
-        function()
-          FzfLua.lgrep_curbuf {
-            actions = {
-              ["ctrl-g"] = false,
-              ["ctrl-t"] = { FzfLua.actions.grep_lgrep },
-            },
-          }
-        end,
-        desc = "search by grep on current buffer",
-      },
-      {
-        "<leader>sG",
-        function()
-          FzfLua.live_grep {
-            actions = {
-              ["ctrl-g"] = false,
-              ["ctrl-t"] = { FzfLua.actions.grep_lgrep },
-              ["ctrl-i"] = { FzfLua.actions.toggle_ignore },
-              ["ctrl-h"] = { FzfLua.actions.toggle_hidden },
-            },
-          }
-        end,
-        desc = "search by grep current project",
-      },
-    },
-    ---@module 'fzf-lua'
-    ---@type fzf-lua.Config|{}
-    ---@diagnostic disable: missing-fields
-    opts = {
-      { "fzf-native" },
-    },
-  },
-
-  {
     "MagicDuck/grug-far.nvim",
     opts = { headerMaxWidth = 80 },
     cmd = { "GrugFar", "GrugFarWithin" },
@@ -71,7 +17,7 @@ return {
           }
         end,
         mode = { "n", "x" },
-        desc = "search and replace",
+        desc = "Search & Replace",
       },
     },
   },
@@ -106,47 +52,6 @@ return {
         desc = "Treesitter Incremental Selection",
       },
     },
-  },
-
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    cmd = "Neotree",
-    dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim" },
-    keys = {
-      { "<C-n>", "<cmd>Neotree toggle<CR>", desc = "Toggle neo-tree" },
-      { "<leader>e", "<cmd>Neotree focus<CR>", desc = "Focus neo-tree" },
-    },
-    opts = function()
-      local on_move = function(data) Snacks.rename.on_rename_file(data.source, data.destination) end
-      local events = require "neo-tree.events"
-
-      ---@module 'neo-tree'
-      ---@type neotree.Config
-      return {
-        sources = { "filesystem", "git_status" },
-        open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf" },
-        filesystem = {
-          bind_to_cwd = false,
-          follow_current_file = { enabled = true },
-          use_libuv_file_watcher = true,
-        },
-        default_component_configs = {
-          indent = {
-            with_expanders = true,
-            expander_collapsed = "",
-            expander_expanded = "",
-          },
-          git_status = {
-            symbols = { unstaged = "󰄱", staged = "󰱒" },
-          },
-        },
-        event_handlers = {
-          { event = events.FILE_MOVED, handler = on_move },
-          { event = events.FILE_RENAMED, handler = on_move },
-        },
-      }
-    end,
   },
 
   {
