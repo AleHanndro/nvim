@@ -4,6 +4,7 @@ return {
     version = "1.*",
     dependencies = {
       "onsails/lspkind.nvim",
+      { "xzbdmw/colorful-menu.nvim", opts = {} },
       {
         "L3MON4D3/LuaSnip",
         build = "make install_jsregexp",
@@ -35,44 +36,39 @@ return {
           })
         end,
       },
-      {
-        "nvim-mini/mini.pairs",
-        opts = {
-          modes = { insert = true, command = true, terminal = false },
-          -- skip autopair when next character is one of these
-          skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-          -- skip autopair when the cursor is inside these treesitter nodes
-          skip_ts = { "string" },
-          -- skip autopair when next character is closing pair
-          -- and there are more closing pairs than opening pairs
-          skip_unbalanced = true,
-          -- better deal with markdown code blocks
-          markdown = true,
-        },
-      },
-      {
-        "windwp/nvim-ts-autotag",
-        opts = {},
-      },
     },
-    event = "InsertEnter",
+    event = { "InsertEnter", "CmdLineEnter" },
     opts = function()
+      local lspkind = require "lspkind"
+      local colorful_menu = require "colorful-menu"
+      local mini_icons = require "mini.icons"
+
       local unknown_types = {
-        "link",
-        "socket",
-        "fifo",
-        "char",
-        "block",
-        "unknown",
+        link = true,
+        socket = true,
+        fifo = true,
+        char = true,
+        block = true,
+        unknown = true,
       }
+
+      --- @param ctx blink.cmp.DrawItemContext
+      local function path_icon(ctx)
+        local type = ctx.item.data.type
+        local unknown = unknown_types[type]
+        local icon, hl = mini_icons.get(unknown and "os" or type, unknown and "" or ctx.label)
+
+        return icon or ctx.kind_icon, icon and hl or ctx.kind_hl
+      end
 
       ---@module 'blink-cmp'
       ---@type blink.cmp.Config
       return {
-        snippets = { preset = "luasnip" },
-        cmdline = { enabled = false },
         appearance = { nerd_font_variant = "normal" },
+        cmdline = { enabled = true },
         fuzzy = { implementation = "prefer_rust" },
+        signature = { enabled = false },
+        snippets = { preset = "luasnip" },
         sources = {
           default = { "lazydev", "lsp", "path", "snippets", "buffer" },
           providers = {
@@ -89,9 +85,9 @@ return {
 
         completion = {
           documentation = {
-            auto_show = false,
+            auto_show = true,
             auto_show_delay_ms = 500,
-            window = { border = "single", scrollbar = false },
+            window = { border = "single" },
           },
           list = {
             selection = { preselect = false, auto_insert = true },
@@ -101,41 +97,47 @@ return {
             scrollbar = false,
             border = "single",
             draw = {
-              columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+              columns = { { "kind_icon" }, { "label", gap = 1 } },
               components = {
                 kind_icon = {
                   text = function(ctx)
-                    if ctx.source_name ~= "Path" then
-                      return (require("lspkind").symbol_map[ctx.kind] or "") .. ctx.icon_gap
+                    if ctx.source_name == "Path" then
+                      local icon = path_icon(ctx)
+                      return icon
                     end
 
-                    local is_unknown_type = vim.tbl_contains(unknown_types, ctx.item.data.type)
-                    local mini_icon, _ = require("mini.icons").get(
-                      is_unknown_type and "os" or ctx.item.data.type,
-                      is_unknown_type and "" or ctx.label
-                    )
-
-                    return (mini_icon or ctx.kind_icon) .. ctx.icon_gap
+                    return lspkind.symbol_map[ctx.kind] or ctx.kind_icon
                   end,
                   highlight = function(ctx)
-                    if ctx.source_name ~= "Path" then return ctx.kind_hl end
+                    if ctx.source_name == "Path" then
+                      local _, hl = path_icon(ctx)
+                      return hl
+                    end
 
-                    local is_unknown_type = vim.tbl_contains(unknown_types, ctx.item.data.type)
-                    local mini_icon, mini_hl = require("mini.icons").get(
-                      is_unknown_type and "os" or ctx.item.data.type,
-                      is_unknown_type and "" or ctx.label
-                    )
-
-                    return mini_icon ~= nil and mini_hl or ctx.kind_hl
+                    return ctx.kind_hl
                   end,
+                },
+                label = {
+                  text = function(ctx) return colorful_menu.blink_components_text(ctx) end,
+                  highlight = function(ctx) return colorful_menu.blink_components_highlight(ctx) end,
                 },
               },
             },
           },
         },
-
-        signature = { enabled = true },
       }
     end,
+  },
+
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    opts = {},
+  },
+
+  {
+    "windwp/nvim-ts-autotag",
+    event = "User FilePost",
+    opts = {},
   },
 }
