@@ -20,6 +20,9 @@ return {
       default_format_opts = { lsp_format = "fallback" },
 
       formatters = {
+        golines = {
+          args = { "--base-formatter=gofumpt -extra", "--ignore-generated" },
+        },
         prettierd = {
           env = { PRETTIERD_LOCAL_PRETTIER_ONLY = "1" },
         },
@@ -41,6 +44,7 @@ return {
       formatters_by_ft = {
         dependabot = { "yamlfmt" },
         gha = { "yamlfmt" },
+        go = { "goimports", "gci", "golines" },
         javascript = { "prettierd", "biome", stop_after_first = true },
         javascriptreact = { "prettierd", "biome", stop_after_first = true },
         json5 = { "biome" },
