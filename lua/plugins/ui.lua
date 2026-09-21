@@ -3,9 +3,6 @@ return {
   {
     "nvim-mini/mini.icons",
     version = false,
-    specs = {
-      { "nvim-tree/nvim-web-devicons", enabled = false, optional = true },
-    },
     opts = {
       file = {
         [".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },
@@ -30,8 +27,6 @@ return {
     ---@module 'snacks'
     ---@type snacks.Config
     opts = {
-      bigfile = { enabled = true },
-      quickfile = {},
       indent = { enabled = true, animate = { enabled = false } },
       picker = {},
     },
@@ -55,7 +50,7 @@ return {
           mode = "buffers",
           themable = true,
           offsets = {
-            { filetype = "neo-tree" },
+            { filetype = "snacks_layout_box" },
           },
         },
         highlights = require("catppuccin.special.bufferline").get_theme(),
@@ -81,5 +76,53 @@ return {
         window = { winblend = 0 },
       },
     },
+  },
+
+  {
+    "onsails/lspkind.nvim",
+    opts = {
+      symbol_map = {
+        Array = "  ",
+        Boolean = " 󰨙 ",
+        Class = " 󰯳 ",
+        Codeium = " 󰘦 ",
+        Collapsed = " > ",
+        Color = " 󰰠 ",
+        Constant = " 󰯱 ",
+        Constructor = "  ",
+        Control = "  ",
+        Copilot = "  ",
+        Enum = " 󰯹 ",
+        EnumMember = " E ",
+        Event = "  ",
+        Field = "  ",
+        File = "  ",
+        Folder = "  ",
+        Function = " 󰡱 ",
+        Interface = " 󰰅 ",
+        Key = "  ",
+        Keyword = " 󱕴 ",
+        Method = " 󰰑 ",
+        Module = " 󰆼 ",
+        Namespace = " 󰰔 ",
+        Null = "  ",
+        Number = " 󰰔 ",
+        Object = " 󰲟 ",
+        Operator = "  ",
+        Package = " 󰰚 ",
+        Property = " 󰲽 ",
+        Reference = " 󰰠 ",
+        Snippet = "  ",
+        String = "  ",
+        Struct = " 󰰣 ",
+        TabNine = " 󰏚 ",
+        Text = " 󱜥 ",
+        TypeParameter = " 󰰦 ",
+        Unit = " 󱜥 ",
+        Value = "  ",
+        Variable = " 󰫧 ",
+      },
+    },
+    config = function(_, opts) require("lspkind").init(opts) end,
   },
 }
