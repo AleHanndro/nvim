@@ -5,6 +5,7 @@ return {
     cmd = "Mason",
     opts = {
       ui = {
+        border = "single",
         icons = {
           package_pending = " ",
           package_installed = " ",
@@ -32,19 +33,7 @@ return {
       }
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities.textDocument.completion.completionItem = {
-        documentationFormat = { "plaintext", "markdown" },
-        snippetSupport = true,
-        preselectSupport = true,
-        insertReplaceSupport = true,
-        labelDetailsSupport = true,
-        deprecatedSupport = true,
-        commitCharactersSupport = true,
-        tagSupport = { valueSet = { 1 } },
-        resolveSupport = {
-          properties = { "documentation", "detail", "additionalTextEdits" },
-        },
-      }
+      capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
       vim.lsp.config("*", { capabilities = capabilities })
     end,
@@ -52,25 +41,10 @@ return {
 
   {
     "mason-org/mason-lspconfig.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "User FilePost",
     dependencies = {
-      "neovim/nvim-lspconfig",
       "mason-org/mason.nvim",
-      {
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        opts = {
-          ensure_installed = {
-            "actionlint", -- yaml (github actions)
-            "hadolint", -- docker
-            "prettierd", -- html/js/ts/tsx/jsx/...
-            "shellcheck", -- Bash/sh
-            "shfmt", -- bash/mksh/sh/zsh
-            "stylua", -- lua
-            "yamlfmt", -- yaml
-            "yamllint", -- yaml
-          },
-        },
-      },
+      "neovim/nvim-lspconfig",
     },
     opts = {
       ensure_installed = {
